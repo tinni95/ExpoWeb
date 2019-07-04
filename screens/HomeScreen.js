@@ -9,30 +9,29 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import { MonoText } from '../components/StyledText';
+import registerForPushNotificationsAsync from "../utils/RegisterForPushNotification";
+import {_retrieveData,_storeData} from "../utils/AsyncStorage/AsyncStorageManager";
 
-export default function HomeScreen() {
+export default class HomeScreen extends React.Component {
+
+  componentDidMount(){
+    _retrieveData();
+  }
+
+  render(){
   return (
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-          />
         </View>
 
         <View style={styles.getStartedContainer}>
           <DevelopmentModeNotice />
 
-          <Text style={styles.getStartedText}>Get started by opening</Text>
+          <Text style={styles.getStartedText}>Get started by obeying</Text>
 
           <View
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
@@ -67,6 +66,7 @@ export default function HomeScreen() {
       </View>
     </View>
   );
+  }
 }
 
 HomeScreen.navigationOptions = {
@@ -97,9 +97,7 @@ function DevelopmentModeNotice() {
 }
 
 function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/development-mode/'
-  );
+  _storeData();
 }
 
 function handleHelpPress() {
